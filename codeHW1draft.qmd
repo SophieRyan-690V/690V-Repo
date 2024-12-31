@@ -1,4 +1,10 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
 
+```{r}
 # clean memory ------------------------------------------------------------
 rm(list = ls())
 
@@ -90,9 +96,12 @@ plot6 = plot5 + geom_text(vjust=0, #hjust if flipping
 plot6
 
 
+```
+
+```{r}
 del1Draft = plot6
 
 # save del1Draft ----------------------------------------------------------
 saveRDS(del1Draft, file = "del1Draft.rds")
-
+```
 
