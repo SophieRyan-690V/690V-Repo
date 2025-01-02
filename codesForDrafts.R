@@ -10,19 +10,26 @@ location='https://github.com/DACSS-Visual/tabular_univar_cat/raw/main/data/'
 file='eduwa.rda'
 link=paste0(location,file)
 
-load('eduwa.rda')
 
 
 #getting the data TABLE from the file in the cloud:
 load(file=url(link))
 
-# see data ----------------------------------------------------------
+# subsetting
 
-head(eduwa)
+townEduwa=eduwa[eduwa$LocaleType=='Town',]
+townEduwa$LocaleSub=droplevels(townEduwa$LocaleSub)
+table = table(townEduwa$LocaleSub)
+proptable = prop.table(table)*100
+# as data frame
+tableFreq=as.data.frame(table)
+# renaming data frame columns
+names(tableFreq)=c("Town","Count")
+# adding percents:
+tableFreq$Percent=as.vector(proptable)
+# then, you have:
+tableFreq
 
-# see data types ----------------------------------------------------------
-
-str(eduwa$LocaleSub)
 
 # deliverable 1 ----------------------------------------------------------
 
@@ -35,29 +42,8 @@ sourceText='Source: US Department of Education'
 x.AxisText="Locations"
 y.AxisText="Count"
 
-townEduwa=eduwa[eduwa$LocaleType=='Town',]
-table(townEduwa$LocaleSub)
-townEduwa$LocaleSub=droplevels(townEduwa$LocaleSub)
 
-table(townEduwa$LocaleSub)
 
-table = table(townEduwa$LocaleSub)
-proptable = prop.table(table)*100
-proptable
-
-# as data frame
-(tableFreq=as.data.frame(table))
-
-# renaming data frame columns
-names(tableFreq)=c("Town","Count")
-# adding percents:
-tableFreq$Percent=as.vector(proptable)
-# then, you have:
-tableFreq
-
-paste0(round(tableFreq$Percent,2), '%')
-
-Labels <- paste0(round(tableFreq$Percent,2), '%')
 
 base= ggplot(data = tableFreq, 
              aes(x = reorder(Town,Percent),y = Percent)) 
@@ -76,23 +62,21 @@ plot3 = plot2 + geom_hline(yintercept = 25,
                            alpha=0.5)
 plot4 = plot3 + scale_y_continuous(breaks=c(0,25,50),
                                    limits = c(0, 50),
-                                   labels=unit_format(suffix = '%')) 
+                                   labels=scales::unit_format(suffix = '%')) 
 
 plot5 = plot4 + theme(plot.caption = element_text(hjust = 0),
                       plot.title = element_text(hjust = 0.5),
                       plot.subtitle = element_text(hjust = 0.5))
 
 
-plot6 = plot5 + geom_text(vjust=0, #hjust if flipping
-                          size = 6,#fontface = "bold",
-                          aes(y = Percent,
-                              label = Labels))
-plot6
+final1 = plot5 + geom_text(aes(label = paste0(round(Percent,2),'%')))
 
 
-del1Draft = plot6
+
+
 
 # save del1Draft ----------------------------------------------------------
-saveRDS(del1Draft, file = "del1Draft.rds")
+saveRDS(final1, file = "final1.rds")
+
 
 

@@ -1,6 +1,6 @@
 ---
 title: "My Dashbord at DACSS"
-bibliography: testVisual.bib
+#bibliography: testVisual.bib
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -15,13 +15,14 @@ library(flexdashboard) # always
 Preparing the dashboard based on the instructions given at @magallanes_reyes_data_2022, and @sievert_flexdashboard_2022.
 
 ### References
-<div id="refs"></div>
+
+::: {#refs}
+:::
 
 ## Column {data-width="450"}
 
 ### Public School Town Types in Washington State
 
 ```{r}
-readRDS("del1Draft.rds")
+readRDS("final1.rds")
 ```
-
