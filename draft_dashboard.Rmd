@@ -26,3 +26,9 @@ Preparing the dashboard based on the instructions given at @magallanes_reyes_dat
 ```{r}
 readRDS("final1.rds")
 ```
+
+### Variance in Age with Types of Arrests
+
+```{r}
+readRDS("final2.rds")
+```

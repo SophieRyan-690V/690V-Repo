@@ -73,8 +73,6 @@ final1 = plot5 + geom_text(aes(label = paste0(round(Percent,2),'%')))
 
 
 
-
-
 # save del1Draft ----------------------------------------------------------
 saveRDS(final1, file = "final1.rds")
 

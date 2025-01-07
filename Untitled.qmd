@@ -1,0 +1,41 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+```{r}
+# clean memory ------------------------------------------------------------
+rm(list = ls())
+
+
+# read in data ------------------------------------------------------------
+#set working directory
+
+filename="theFile.csv"
+mydata=read.csv(filename)
+
+
+# see data ----------------------------------------------------------
+
+
+head(mydata)
+
+
+# see data types ----------------------------------------------------------
+
+str(mydata)
+
+# deliverable 1 ----------------------------------------------------------
+library(ggplot2)
+
+base= ggplot(data=mydata) 
+del1Draft= base + geom_bar(aes(x=LocaleType))
+del1Draft
+
+
+# save del1Draft ----------------------------------------------------------
+saveRDS(del1Draft, file = "del1Draft.rds")
+
+```
+
