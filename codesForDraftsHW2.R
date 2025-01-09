@@ -35,11 +35,11 @@ arrests <- arrests %>%
 
 tapply(arrests$Age,arrests$`Arrest Type`, summary)
 
-summaryBy=aggregate(data = arrests,
-                    Age ~ `Arrest Type`,
+summaryBy=aggregate(data=arrests,
+                    Age~`Arrest Type`,
                     FUN = function(x) c(median = median(x),
                                         max=max(x)) )
-#when several functions at play
+
 summaryBy=do.call(data.frame,summaryBy)
 summaryBy
 
@@ -52,24 +52,30 @@ summaryBy_long=reshape2::melt(summaryBy,variable.name = 'stats',
                               id.vars='Arrest Type')
 summaryBy_long
 
-summaryBy$`Arrest Type` <- reorder(summaryBy$`Arrest Type`, summaryBy$median)
+summaryBy_long$`Arrest Type` <- factor(
+  summaryBy_long$`Arrest Type`,
+  levels = c("Felony", "Misdemeanor", "Warrant", "Other") # Desired order
+)
 
+summaryBy_long <- summaryBy_long[order(summaryBy_long$`Arrest Type`), ]
 
-summaryBy_long$`Arrest Type` <- factor(summaryBy_long$`Arrest Type`, 
-                                       levels = levels(summaryBy$`Arrest Type`))
+summaryBy_long
 
-titleText='Variance in Age with Types of Arrests'
-sub_titleText='Massachusetts Arrests - January 2019 to March 2020'
+titleText='Age Disparities in Arrest Types - Felonies Associated With Younger Offenders'
+sub_titleText='Massachusetts Field Services and Investigative Divisions Arrests - January 2019 to March 2020'
 sourceText='Source: Massachusetts State Police'
 
 base1=ggplot(data=summaryBy_long,
-             aes(x=`Arrest Type`, y= Age,
+             aes(x = reorder(`Arrest Type`, desc(`Arrest Type`)), y= Age,
                  fill=stats)) # fill brings a legend
+
 barDodge= base1 +  geom_bar(stat="identity",
                             position ='dodge') 
-barDodge = barDodge + labs(title=titleText,
+barDodge = barDodge + theme_minimal() + labs(title=titleText,
                              subtitle = sub_titleText,
-                             caption = sourceText)
+                             caption = sourceText,
+                            y="Age",
+                           x="Arrest Type")
 barDodge = barDodge + geom_text(size = 4,
                      position = position_dodge(1),hjust=0,
                      aes(label=round(Age,1)))+
@@ -77,10 +83,11 @@ barDodge = barDodge + geom_text(size = 4,
 
 barDodge = barDodge + theme(plot.caption = element_text(hjust = 0),
                       plot.title = element_text(hjust = 0.5),
-                      plot.subtitle = element_text(hjust = 0.5))
+                      plot.subtitle = element_text(hjust = 0.5)) 
 barDodge
 
 final2 = barDodge
 
 # save del2Draft ----------------------------------------------------------
 saveRDS(final2, file = "final2.rds")
+

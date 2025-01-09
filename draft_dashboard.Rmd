@@ -8,6 +8,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard) # always
+library(dplyr)  # Load dplyr for desc() and other functions
 ```
 
 ## Intro {.sidebar}
@@ -27,7 +28,9 @@ Preparing the dashboard based on the instructions given at @magallanes_reyes_dat
 readRDS("final1.rds")
 ```
 
+
 ### Variance in Age with Types of Arrests
+
 
 ```{r}
 readRDS("final2.rds")
