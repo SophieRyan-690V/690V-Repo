@@ -8,7 +8,8 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard) # always
-library(dplyr)  # Load dplyr for desc() and other functions
+library(dplyr) # Load dplyr for desc() and other functions
+library(ggplot2)
 ```
 
 ## Intro {.sidebar}
@@ -35,3 +36,10 @@ readRDS("final1.rds")
 ```{r}
 readRDS("final2.rds")
 ```
+
+### Variance in Tender Types for Boston Politcal Contributors
+
+```{r}
+readRDS("final3.rds")
+```
+
