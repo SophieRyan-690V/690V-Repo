@@ -31,25 +31,33 @@ bosContType=bostonCont[bostonCont$Amount > 0 & bostonCont$`Tender Type Descripti
 
 table(bosContType$Amount,bosContType$`Tender Type Description`)
 
+
 library(dplyr)
 
 bostCont_agg <- bosContType %>%
   group_by(Zip, `Tender Type Description`) %>%
   summarise(
     counts = n(),                       # Number of rows
-    amountPerCap = mean(Amount, na.rm = TRUE),  # Average amount
+    amount = mean(Amount, na.rm = TRUE),  # Average amount
     .groups = "drop"                    # Ungroup after summarising
   )
 
 # View the result
 print(bostCont_agg)
 
-bostCont_agg %>%
-  group_by(Zip, `Tender Type Description`) %>%
-  
-  mutate(percentage = counts / sum(counts) * 100) ->bostCont_agg
 
-bostCont_agg$counts=NULL
+bostCont_agg <- bostCont_agg%>%
+  group_by(Zip) %>%
+  mutate(percentage = amount / sum(amount, na.rm = TRUE) * 100) %>%
+  ungroup()  # Ungroup to prevent further unintended grouping
+
+bostCont_agg$amount=NULL
+
+bostCont_agg %>%
+  group_by(Zip) %>%
+  summarise(total_percentage = sum(percentage, na.rm = TRUE)) %>%
+  print(n = 10)
+
 
 # map to the left!
 
@@ -62,13 +70,13 @@ head(bostCont_bostZips)
 base=ggplot() + theme_void() 
 
 final3 = base + geom_sf(data=bostCont_bostZips,
-               aes(fill=amountPerCap)) + 
+               aes(fill=percentage)) + 
   scale_fill_viridis_c(direction = -1,
                        na.value = 'red') + # missing in red?
   facet_grid(~ `Tender Type Description`) +
-  labs(fill='Contribution Per Tender Type',
+  labs(fill='Percent Contribution Per Tender Type\n (white:no information)',
        title = 'Cash or Card? Stark Differences in Payment Types for Boston Political Contributors',
-       subtitle = 'Massachusetts Office of Campaign and Political Finance') +
+       subtitle = 'Massachusetts Office of Campaign and Political Finance (2024)') +
   theme(
     plot.title = element_text(hjust = 0.6, size = 11, face = "bold"),  # Center title
     plot.subtitle = element_text(hjust = 0.6, size = 11),

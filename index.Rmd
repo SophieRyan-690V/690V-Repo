@@ -1,0 +1,43 @@
+---
+title: "My Storyboard at DACSS - tabs"
+#bibliography: testVisual.bib
+output: 
+  flexdashboard::flex_dashboard
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard) # always
+library(dplyr)
+library(ggplot2)
+```
+
+## Sidebar {.sidebar}
+
+
+Preparing the dashboard based on the instructions given at @magallanes_reyes_data_2022, and @aden-buie_flexdashboard_2023.
+
+## Column {.tabset .tabset-fade}
+
+
+### Public School Town Types in Washington State
+
+```{r}
+readRDS("final1.rds")
+```
+
+
+### Variance in Age with Arrest Types
+
+```{r}
+readRDS("final2.rds")
+```
+
+### Variance in Tender Types for Political Contributors in Boston 
+
+```{r}
+readRDS("final3.rds")
+```
+
+
+
+### References 
